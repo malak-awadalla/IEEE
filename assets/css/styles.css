@@ -1,0 +1,680 @@
+/* ========================================
+   COLORS
+   ======================================== */
+:root {
+  --page-blue: #064d99;
+  --letter-blue: #438be9;
+  --letter-yellow: #ffb414;
+  --letter-red: #ff1644;
+  --letter-teal: #39a4ad;
+  --dark: #171022;
+  --square-yellow: #ffb53f;
+}
+
+/* ========================================
+   GENERAL
+   ======================================== */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--page-blue);
+  color: white;
+}
+
+body {
+  font-family: 'Arial Narrow', Arial, sans-serif;
+}
+
+/* ========================================
+   PAGE LAYOUT
+   ======================================== */
+.poster {
+  --tile: clamp(40px, 7.5vw, 100px);
+  --text-inset: calc(var(--tile) * 2 + 12px);
+  --edge: clamp(16px, 3vw, 40px);
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  max-width: 1600px;
+  margin: auto;
+  min-height: 100svh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding:
+    calc(var(--tile) * 2 + 30px)
+    var(--edge)
+    calc(var(--tile) * 2 + 32px);
+}
+
+/* ========================================
+   TOP HEADING
+   ======================================== */
+.intro {
+  top: -50px;
+  left: -50px;
+  position: relative;
+  z-index: 1;
+  font-size: clamp(25px, 3vw, 39px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -.04em;
+
+  margin:
+    0
+    0
+    clamp(38px, 6vw, 72px)
+    var(--text-inset);
+}
+
+/* ========================================
+   MEMBERS ROW
+   ======================================== */
+.word {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+
+  width: min(100%, 1080px);
+  margin: 0 auto clamp(42px, 6vw, 72px);
+  padding: clamp(12px, 2vw, 28px) 2%;
+}
+
+/* Bigger circles. */
+.letter-slot {
+  --pop-delay: .25s;
+  --pop-duration: .65s;
+
+  position: relative;
+  width: 17%;
+  flex: none;
+  opacity: 0;
+  transform: scale(0);
+
+  animation:
+    pop-in var(--pop-duration)
+    cubic-bezier(.2, .85, .3, 1.25)
+    var(--pop-delay) both;
+}
+
+/* Slight overlap between neighboring circles. */
+.letter-slot + .letter-slot {
+  margin-left: -2%;
+}
+
+/* Each letter pops in separately.
+   Adjust these delays to change the sequence. */
+.letter-slot:nth-child(1) {
+  --pop-delay: .25s;
+}
+
+.letter-slot:nth-child(2) {
+  --pop-delay: .40s;
+  margin-top: -6%;
+}
+
+.letter-slot:nth-child(3) {
+  --pop-delay: .55s;
+  margin-top: -3%;
+}
+
+.letter-slot:nth-child(4) {
+  --pop-delay: .70s;
+  margin-top: 4%;
+}
+
+.letter-slot:nth-child(5) {
+  --pop-delay: .85s;
+  margin-top: -6.5%;
+}
+
+.letter-slot:nth-child(6) {
+  --pop-delay: 1s;
+  margin-top: 4%;
+}
+
+.letter-slot:nth-child(7) {
+  --pop-delay: 1.15s;
+  margin-top: -2.5%;
+}
+
+/* Pixelated oval.
+   Continuous movement starts after its own popup. */
+.letter {
+  width: 100%;
+  aspect-ratio: .69;
+  display: grid;
+  place-items: center;
+  background: var(--color);
+  border-radius: 0;
+
+  clip-path: polygon(
+    38% 0%, 62% 0%, 62% 2%, 74% 2%,
+    74% 5%, 82% 5%, 82% 9%, 88% 9%,
+    88% 14%, 93% 14%, 93% 21%, 97% 21%,
+    97% 31%, 100% 31%, 100% 69%, 97% 69%,
+    97% 79%, 93% 79%, 93% 86%, 88% 86%,
+    88% 91%, 82% 91%, 82% 95%, 74% 95%,
+    74% 98%, 62% 98%, 62% 100%, 38% 100%,
+    38% 98%, 26% 98%, 26% 95%, 18% 95%,
+    18% 91%, 12% 91%, 12% 86%, 7% 86%,
+    7% 79%, 3% 79%, 3% 69%, 0% 69%,
+    0% 31%, 3% 31%, 3% 21%, 7% 21%,
+    7% 14%, 12% 14%, 12% 9%, 18% 9%,
+    18% 5%, 26% 5%, 26% 2%, 38% 2%
+  );
+
+  transform: rotate(var(--tilt, 0deg));
+  transform-origin: center;
+
+  animation:
+    bob var(--speed, 4s) ease-in-out
+    calc(var(--pop-delay) + var(--pop-duration))
+    infinite both;
+}
+
+/* Bigger white letters inside the circles. */
+.glyph {
+  width: 60%;
+  height: 78%;
+  display: block;
+  shape-rendering: crispEdges;
+}
+
+/* ========================================
+   RIGHT SIDE TEXT
+   ======================================== */
+.traits {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(16px, 2.4vw, 30px);
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: right;
+  margin: 0 5% clamp(30px, 5vw, 60px);
+}
+
+/* ========================================
+   LOWER HEADING AND BUTTON POSITION
+   ======================================== */
+.bottom {
+  position: relative;
+  top: 70px;
+  z-index: 1;
+  margin-left: 40px;
+  margin-right: 0;
+  max-width: 750px;
+}
+
+.bottom h2 {
+  font-size: clamp(18px, 2.7vw, 34px);
+  line-height: 1.15;
+  letter-spacing: -.035em;
+  margin: 0 0 clamp(16px, 2.4vw, 24px);
+}
+
+/* ========================================
+   BUTTON
+   ======================================== */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  max-width: 100%;
+
+  padding:
+    clamp(10px, 1.1vw, 14px)
+    clamp(18px, 2.5vw, 30px);
+
+  background: var(--square-yellow);
+  color: var(--dark);
+  text-decoration: none;
+
+  font-family: Arial, sans-serif;
+  font-weight: 800;
+  font-size: clamp(15px, 2.2vw, 30px);
+
+  border: 2px solid var(--dark);
+  box-shadow: 4px 4px 0 var(--dark);
+  transition: transform .2s, box-shadow .2s;
+}
+
+.button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--dark);
+}
+
+.button:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 7px;
+}
+
+/* ========================================
+   DECORATIVE SQUARES
+   ======================================== */
+.tiles {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: repeat(3, var(--tile));
+  grid-auto-rows: var(--tile);
+}
+
+.tiles i {
+  background: var(--tile-color);
+}
+
+.tl {
+  top: 0;
+  left: 0;
+}
+
+.tr {
+  top: calc(var(--tile) * 1.2);
+  right: 0;
+  grid-template-columns: repeat(2, var(--tile));
+}
+
+.bl {
+  left: 0;
+  bottom: 50px;
+  grid-template-columns: repeat(2, var(--tile));
+}
+
+.br {
+  right: 0;
+  bottom: 0;
+}
+
+/* ========================================
+   DECORATIVE DOTS
+   ======================================== */
+.dot {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  width: clamp(10px, 2vw, 23px);
+  height: clamp(10px, 2vw, 23px);
+  animation: float 5s ease-in-out infinite;
+}
+
+.d1 {
+  background: var(--letter-blue);
+  top: 39%;
+  left: 2%;
+}
+
+.d2 {
+  background: white;
+  top: 31%;
+  left: 66%;
+}
+
+.d3 {
+  background: var(--letter-yellow);
+  top: 63%;
+  right: 19%;
+}
+
+.d4 {
+  background: var(--letter-teal);
+  top: 59%;
+  left: 53%;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0);
+  }
+
+  70% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.1);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform:
+      translateY(0)
+      rotate(var(--tilt, 0deg))
+      scale(1);
+  }
+
+  25% {
+    transform:
+      translateY(calc(var(--travel, 14px) * -.6))
+      rotate(calc(var(--tilt, 0deg) + 3deg))
+      scale(.92);
+  }
+
+  50% {
+    transform:
+      translateY(calc(var(--travel, 14px) * -1))
+      rotate(calc(var(--tilt, 0deg) + 6deg))
+      scale(1.09);
+  }
+
+  75% {
+    transform:
+      translateY(calc(var(--travel, 14px) * .35))
+      rotate(calc(var(--tilt, 0deg) - 2deg))
+      scale(.96);
+  }
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ========================================
+   PHONE LAYOUT
+   ======================================== */
+@media (max-width: 650px) {
+  .poster {
+    justify-content: center;
+  }
+
+  .intro {
+    margin-left: var(--text-inset);
+    margin-right: 0;
+    font-size: clamp(18px, 2.4vw, 30px);
+  }
+
+  .traits {
+    top: 15px;
+    font-size: clamp(18px, 2.4vw, 30px);
+    margin-right: 2%;
+  }
+
+  .bottom h2 {
+    font-size: clamp(18px, 2.4vw, 30px);
+  }
+
+  .button {
+    font-size: clamp(12px, 1.2vw, 16px);
+    padding:
+      clamp(8px, 1vw, 14px)
+      clamp(16px, 2vw, 30px);
+    min-height: 0;
+  }
+
+  .word {
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+  }
+}
+
+/* ========================================
+   LAPTOP — MATCH THE SCREENSHOT
+   ======================================== */
+@media (min-width: 1024px) {
+  .poster {
+    --tile: min(5.3vw, 9svh);
+
+    position: relative;
+    max-width: none;
+    width: 100%;
+    height: 100svh;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    display: block;
+  }
+
+  /* Upper-left heading. */
+  .intro {
+    position: absolute;
+    top: 9.5%;
+    left: 21%;
+    width: auto;
+    max-width: none;
+    margin: 0;
+
+    font-size: min(2vw, 3.6svh);
+    line-height: 1.1;
+  }
+
+  /* Large MEMBERS row in the upper-middle. */
+  .word {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: min(74vw, 128svh);
+    margin: 0;
+    padding: 0;
+    gap: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .letter-slot {
+    width: 17%;
+  }
+
+  .letter-slot + .letter-slot {
+    margin-left: -2%;
+  }
+
+  .glyph {
+    width: 60%;
+    height: 78%;
+  }
+
+  /* Text below the letters, toward the right. */
+  .traits {
+    position: absolute;
+    top: 63%;
+    right: 21%;
+    left: auto;
+
+    width: auto;
+    max-width: none;
+    margin: 0;
+
+    font-size: min(1.9vw, 3.4svh);
+    line-height: 1.15;
+    text-align: right;
+  }
+
+  /* Lower heading aligned with the upper heading. */
+  .bottom {
+    position: absolute;
+    top: 74%;
+    left: 21%;
+    right: auto;
+
+    width: auto;
+    max-width: none;
+    margin: 0;
+  }
+
+  .bottom h2 {
+    font-size: min(2vw, 3.6svh);
+    line-height: 1.1;
+    margin: 0 0 2svh;
+  }
+
+  .button {
+    min-height: 0;
+    font-size: min(1.5vw, 2.6svh);
+    padding: 1.6svh 2.5vw;
+  }
+
+  /* Corner squares. */
+  .tl {
+    top: 0;
+    left: 0;
+  }
+
+  .tr {
+    top: 1.8%;
+    right: 0;
+  }
+
+  .bl {
+    left: 0;
+    bottom: 1.8%;
+  }
+
+  .br {
+    right: 0;
+    bottom: 0;
+  }
+
+  /* Decorative dots. */
+  .dot {
+    width: min(1.2vw, 2.2svh);
+    height: min(1.2vw, 2.2svh);
+  }
+
+  .d1 {
+    top: 39%;
+    left: 2%;
+  }
+
+  .d2 {
+    top: 23%;
+    left: 66%;
+  }
+
+  .d3 {
+    top: 63%;
+    right: 19%;
+  }
+
+  .d4 {
+    top: 59%;
+    left: 53%;
+  }
+}
+/* Compact spacing for shorter laptop screens. */
+@media (min-width: 1024px) and (max-height: 650px) {
+  .poster {
+    gap: 2vh;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+  }
+
+  .intro,
+  .bottom h2 {
+    font-size: clamp(20px, 3.6vh, 24px);
+  }
+
+  .traits {
+    font-size: clamp(18px, 3.2vh, 22px);
+  }
+
+  .word {
+    width: min(92vw, 1400px, 140vh);
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+  }
+
+  .button {
+    min-height: 40px;
+    font-size: 16px;
+    padding: 8px 24px;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  .letter-slot {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .letter {
+    animation: none;
+    transform: rotate(var(--tilt, 0deg));
+  }
+
+  .dot {
+    animation: none;
+  }
+
+  .button {
+    transition: none;
+  }
+}
+/* ========================================
+   PDF TYPOGRAPHY AND PHONE DESIGN
+   ======================================== */
+/* Reference typography is vector artwork from the supplied PDF, so it displays
+   PP NeueBit exactly without requiring a separately licensed webfont. */
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0; }
+.intro img { display:block; width:5em; height:auto; }
+.traits img { display:block; width:8.15em; height:auto; }
+.bottom h2 img { display:block; width:7.8em; height:auto; }
+.art { display:none; pointer-events:none; }
+@media (max-width: 650px) {
+ .poster { --page-blue:#064d99; width:100%; max-width:none; min-height:0; height:auto; aspect-ratio:412 / 732; padding:0; display:block; }
+ .tiles { display:none; }
+ .art { display:block; position:absolute; z-index:0; }
+ .art-top-left { top:0; left:0; width:43.45%; }
+ .art-top-right { top:9.153%; right:0; width:28.883%; }
+ .art-bottom-left { top:53.96%; left:0; width:28.398%; }
+ .art-bottom-right { bottom:0; right:0; width:28.64%; }
+ .art-logo { top:1.23%; left:87.86%; width:10.44%; }
+ .art-corner { bottom:0; left:0; width:14.563%; }
+ .intro { position:absolute; top:18.033%; left:7.282%; margin:0; width:30.825%; font-size:inherit; }
+ .intro img { width:100%; }
+ .word { position:absolute; top:32.6%; left:2.7%; width:94.6%; padding:0; margin:0; }
+ .letter-slot { width:16.8%; }
+ .letter-slot + .letter-slot { margin-left:-2%; }
+ .letter-slot:nth-child(1) { margin-top:9%; }
+ .letter-slot:nth-child(2) { margin-top:-8%; }
+ .letter-slot:nth-child(3) { margin-top:-3%; }
+ .letter-slot:nth-child(4) { margin-top:14%; }
+ .letter-slot:nth-child(5) { margin-top:-9%; }
+ .letter-slot:nth-child(6) { margin-top:14%; }
+ .letter-slot:nth-child(7) { margin-top:-1%; }
+ .letter { aspect-ratio:.61; }
+ .glyph { width:54%; height:75%; }
+ .traits { position:absolute; top:61.202%; right:3.883%; width:45.146%; margin:0; font-size:inherit; }
+ .traits img { width:100%; }
+ .bottom { position:absolute; top:75%; left:7.767%; width:60%; max-width:none; margin:0; }
+ .bottom h2 { margin:0 0 3.5%; font-size:inherit; }
+ .bottom h2 img { width:71.6%; }
+ .button { font-size:clamp(12px,3.4vw,22px); min-height:44px; padding:2.5% 7%; }
+ .dot { width:3.4%; height:auto; aspect-ratio:1; }
+ .d1 { top:34%; left:3.2%; }
+ .d2 { top:29.8%; left:68.5%; }
+ .d3 { top:53.1%; right:18.3%; }
+ .d4 { top:50.9%; left:56.2%; width:5.2%; }
+}
